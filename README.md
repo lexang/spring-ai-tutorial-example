@@ -24,6 +24,7 @@
 | [example-07-tool-calling](./example-07-tool-calling/README.md) | 只读工具、自动/手动循环、预算与异常边界 | 31 个离线测试 |
 | [example-08-embeddings](./example-08-embeddings/README.md) | 本地向量化、批量响应与相似度校验 | 21 个通过，1 个 ONNX 条件测试跳过 |
 | [example-09-vector-stores](./example-09-vector-stores/README.md) | 文档 CRUD、过滤检索与 PGvector 构建档 | PGvector 档 23 个通过，1 个数据库测试跳过 |
+| [example-10-rag-basics](./example-10-rag-basics/README.md) | 回答与候选来源、查询改写/扩展与后处理 | 31 个通过，1 个真实模型条件测试跳过 |
 
 后续按调用、模板、结构化输出、多模型、工具、检索、工程实践和综合业务项目补充，不按官方供应商或数据库子页面复制同款示例。
 

@@ -1,0 +1,70 @@
+@baseUrl = http://localhost:8080
+
+### 博客基础篇：同一次检索的回答与候选来源
+POST {{baseUrl}}/api/rag/ask
+Content-Type: application/json
+
+{"question":"Spring AI 的 RAG 有什么作用？","product":"Spring AI","category":"RAG"}
+
+### 博客进阶篇：查询改写、扩展与后处理
+POST {{baseUrl}}/api/rag/part2/advanced
+Content-Type: application/json
+
+{"question":"我想让模型回答项目文档里的问题，应该怎样组织查询和检索？"}
+
+### 空问题：应返回 400，不访问模型
+POST {{baseUrl}}/api/rag/ask
+Content-Type: application/json
+
+{"question":" "}
+
+### Part 1 健康检查
+GET {{baseUrl}}/api/rag/part1/health
+
+### 最简单的 QuestionAnswerAdvisor RAG
+GET {{baseUrl}}/api/rag/part1/simple?question=Spring%20AI%20是什么？
+
+### 使用产品和类别过滤
+GET {{baseUrl}}/api/rag/part1/filtered?question=RAG%20有什么作用？&product=Spring%20AI&category=RAG
+
+### 自定义 QuestionAnswerAdvisor 模板
+GET {{baseUrl}}/api/rag/part1/custom?question=Spring%20AI%20支持哪些能力？
+
+### 模块化 RAG：默认不允许空上下文
+GET {{baseUrl}}/api/rag/part1/modular?question=Spring%20AI%20如何支持向量数据库？
+
+### 模块化 RAG：请求级结构化过滤
+GET {{baseUrl}}/api/rag/part1/modular/filtered?question=有哪些监控能力？&product=Spring%20Boot&category=监控
+
+### 模块化 RAG：允许空上下文
+GET {{baseUrl}}/api/rag/part1/modular/allow-empty?question=量子计算是什么？
+
+### Part 2 健康检查
+GET {{baseUrl}}/api/rag/part2/health
+
+### 查询重写 + RAG
+GET {{baseUrl}}/api/rag/part2/rewrite?question=它的%20RAG%20怎么用？
+
+### 查询翻译 + RAG
+GET {{baseUrl}}/api/rag/part2/translate?question=什么是%20Spring%20AI？
+
+### 查询扩展 + RAG
+GET {{baseUrl}}/api/rag/part2/expand?question=如何使用%20RAG？
+
+### 完整高级 RAG
+GET {{baseUrl}}/api/rag/part2/advanced?question=Spring%20AI%20支持什么？
+
+### 单独观察查询重写结果
+GET {{baseUrl}}/api/rag/modules/rewrite?question=它怎么配置？
+
+### 单独观察翻译结果
+GET {{baseUrl}}/api/rag/modules/translate?question=什么是%20Spring%20AI？
+
+### 单独观察扩展结果
+GET {{baseUrl}}/api/rag/modules/expand?question=如何运行%20Spring%20Boot？
+
+### 压缩历史和追问
+GET {{baseUrl}}/api/rag/modules/compress?question=它的第二大城市呢？&previousQuestion=丹麦的首都是什么？&previousAnswer=哥本哈根是丹麦的首都。
+
+### 参数错误示例：返回中文 400 JSON
+GET {{baseUrl}}/api/rag/part1/simple?question=
