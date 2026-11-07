@@ -1,0 +1,37 @@
+### 应用状态（不访问外部模型）
+GET http://localhost:8080/api/observability/status
+
+### 同步 ChatClient：会产生 ChatClient、Advisor 和离线 ChatModel observation
+POST http://localhost:8080/api/observability/chat
+Content-Type: application/json
+
+{
+  "message": "请用一句话解释 Spring AI 可观测性"
+}
+
+### 流式 ChatClient：观察在 Flux 完成后停止
+POST http://localhost:8080/api/observability/stream
+Content-Type: application/json
+Accept: text/event-stream
+
+{
+  "message": "分两段说明指标与追踪的区别"
+}
+
+### SimpleVectorStore：产生 add/query 向量库 observation
+POST http://localhost:8080/api/observability/vector/search
+Content-Type: application/json
+
+{
+  "query": "如何记录模型指标",
+  "topK": 2
+}
+
+### 应用当前已注册的 Meter 名称
+GET http://localhost:8080/api/observability/metrics
+
+### Spring Boot Actuator 指标
+GET http://localhost:8080/actuator/metrics
+
+### Prometheus 格式
+GET http://localhost:8080/actuator/prometheus

@@ -1,0 +1,35 @@
+### 运行中的离线演示
+GET http://localhost:8080/api/evaluations/demo
+
+### 相关性评估：预期 pass=true、score=1
+POST http://localhost:8080/api/evaluations/relevancy
+Content-Type: application/json
+
+{
+  "question": "Spring AI 2.0 如何构建对话应用？",
+  "context": [
+    "Spring AI 2.0 使用 ChatClient 构建对话应用。"
+  ],
+  "response": "Spring AI 2.0 使用 ChatClient 构建对话应用。"
+}
+
+### 事实核验：预期 pass=false
+POST http://localhost:8080/api/evaluations/fact-checking
+Content-Type: application/json
+
+{
+  "context": [
+    "地球是距离太阳第三近的行星。"
+  ],
+  "claim": "地球是距离太阳第四近的行星。"
+}
+
+### 参数校验错误：预期 HTTP 400
+POST http://localhost:8080/api/evaluations/relevancy
+Content-Type: application/json
+
+{
+  "question": "",
+  "context": [],
+  "response": ""
+}

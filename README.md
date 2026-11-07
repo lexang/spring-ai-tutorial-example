@@ -31,6 +31,8 @@
 | [example-14-multimodal](./example-14-multimodal/README.md) | 媒体输入、文件转写、二进制输出与流取消 | 21 个离线/本机测试通过 |
 | [example-15-mcp-client](./example-15-mcp-client/README.md) | MCP 连接、发现、直接工具调用与边界 | 7 个测试通过，真实本机闭环通过 |
 | [example-15-mcp-server](./example-15-mcp-server/README.md) | 注册计算工具、Schema 与可选能力 | 13 个测试通过，含本机 SDK 协议验证 |
+| [example-16-observability](./example-16-observability/README.md) | 观察指标、Prometheus 与默认隐私 convention | 6 个测试通过，本机指标检查通过 |
+| [example-17-testing-evaluation](./example-17-testing-evaluation/README.md) | 评估契约与显式 Judge 模式 | 15 个通过，1 个可选容器测试跳过 |
 
 后续按调用、模板、结构化输出、多模型、工具、检索、工程实践和综合业务项目补充，不按官方供应商或数据库子页面复制同款示例。
 
