@@ -27,6 +27,7 @@
 | [example-10-rag-basics](./example-10-rag-basics/README.md) | 回答与候选来源、查询改写/扩展与后处理 | 31 个通过，1 个真实模型条件测试跳过 |
 | [example-11-etl-pipeline](./example-11-etl-pipeline/README.md) | 离线预览、读取/分块和显式向量入库 | 29 个通过，1 个 ONNX 条件测试跳过 |
 | [example-12-chat-memory](./example-12-chat-memory/README.md) | 会话窗口、JDBC 存储与模型请求边界 | 19 个通过，1 个真实模型条件测试跳过 |
+| [example-13-advisors-deep-dive](./example-13-advisors-deep-dive/README.md) | 执行链、离线预览、阻断与有限递归 | 33 个通过，1 个真实模型条件测试跳过 |
 
 后续按调用、模板、结构化输出、多模型、工具、检索、工程实践和综合业务项目补充，不按官方供应商或数据库子页面复制同款示例。
 

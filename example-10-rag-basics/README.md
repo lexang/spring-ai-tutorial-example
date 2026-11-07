@@ -204,8 +204,8 @@ src/main/java/com/example/springai/
 
 更多原理和代码说明见：
 
-- [`../../doc/10-rag-basics-part1.md`](../../doc/10-rag-basics-part1.md)
-- [`../../doc/10-rag-basics-part2.md`](../../doc/10-rag-basics-part2.md)
+- [v2.0.2 官方 RAG 文档](https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-docs/src/main/antora/modules/ROOT/pages/api/retrieval-augmented-generation.adoc)
+- [示例完整源码](./src/main/java/com/example/springai/)
 
 ## 博客主线：回答与检索来源
 

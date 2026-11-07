@@ -1,6 +1,6 @@
 # Spring AI 2.0 Chat Memory 示例
 
-本项目与 [教程 12：对话记忆](../../doc/12-chat-memory.md) 配套，演示 Spring AI 2.0 的 `ChatMemory`、`ChatMemoryRepository`、`MessageChatMemoryAdvisor` 和 `VectorStoreChatMemoryAdvisor`。
+本项目与会话记忆博客教程配套，依据 [v2.0.2 官方文档](https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-docs/src/main/antora/modules/ROOT/pages/api/chat-memory.adoc)，演示 `ChatMemory`、`ChatMemoryRepository`、`MessageChatMemoryAdvisor` 和 `VectorStoreChatMemoryAdvisor`。
 
 示例默认可以完全离线启动：不配置 API Key、不下载 ONNX 模型，也能操作和测试 InMemory、JDBC/H2 两种窗口记忆。真实模型聊天和向量语义记忆必须通过环境变量显式启用。
 

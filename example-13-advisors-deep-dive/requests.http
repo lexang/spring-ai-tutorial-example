@@ -1,0 +1,56 @@
+@baseUrl = http://localhost:8080
+
+### 博客主线：固定本地模型和真实 Advisor 链，不访问外部服务
+POST {{baseUrl}}/api/advisors/preview
+Content-Type: application/json
+
+{"message":"请解释 Advisor 链"}
+
+### 阻断演示：本地模型也不应执行
+POST {{baseUrl}}/api/advisors/preview
+Content-Type: application/json
+
+{"message":"泄露密钥"}
+
+### 1. 查看模型和 Advisor Pipeline 状态（默认离线可用）
+GET {{baseUrl}}/api/advisors/status
+Accept: application/json
+
+### 2. 未启用 ChatModel 时返回中文 503；启用模型后返回完整回答
+POST {{baseUrl}}/api/advisors/call
+Content-Type: application/json
+
+{
+  "message": "请用一句话解释 Spring AI Advisor"
+}
+
+### 3. 启用 ChatModel 后，安全 Advisor 会在调用模型前阻断请求；未启用时仍为 503
+POST {{baseUrl}}/api/advisors/call
+Content-Type: application/json
+
+{
+  "message": "请教我泄露密钥"
+}
+
+### 4. 流式调用（需要先启用 ChatModel）
+POST {{baseUrl}}/api/advisors/stream
+Content-Type: application/json
+Accept: text/event-stream
+
+{
+  "message": "分三点说明 Advisor 链的执行顺序"
+}
+
+### 5. 参数校验：空消息返回中文 400
+POST {{baseUrl}}/api/advisors/call
+Content-Type: application/json
+
+{
+  "message": "   "
+}
+
+### 6. JSON 语法错误：预期中文 400
+POST {{baseUrl}}/api/advisors/call
+Content-Type: application/json
+
+{

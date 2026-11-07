@@ -1,6 +1,6 @@
 # Spring AI 2.0 ETL Pipeline 示例
 
-这是[教程 11：ETL 数据处理流水线](../../doc/11-etl-pipeline.md)的完整可运行项目。代码依据本仓库的 Spring AI 2.0 官方页面 [`api/etl-pipeline.adoc`](../../api/etl-pipeline.adoc) 和本地 2.0 源码核对。
+这是 ETL 博客教程的完整可运行项目。代码依据 [v2.0.2 官方 ETL 页面](https://github.com/spring-projects/spring-ai/blob/v2.0.2/spring-ai-docs/src/main/antora/modules/ROOT/pages/api/etl-pipeline.adoc) 和发布源码核对。
 
 项目覆盖：
 
