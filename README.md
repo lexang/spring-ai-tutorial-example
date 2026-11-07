@@ -25,6 +25,8 @@
 从 GitHub 克隆本仓库，进入所选示例目录执行：
 
 ```powershell
+git clone https://github.com/lexang/spring-ai-tutorial-example.git
+cd spring-ai-tutorial-example
 cd example-01-getting-started
 mvn clean package "-Dmaven.build.cache.enabled=false"
 ```
@@ -53,3 +55,9 @@ mvn spring-boot:run
 - [Spring AI 官方参考文档](https://docs.spring.io/spring-ai/reference/index.html)
 
 本仓库是中文教程配套项目，与 Spring AI 官方仓库分别维护。
+
+## 博客文章
+
+- [Spring AI 实战系列](https://bitzw.modelgateai.com/blog/spring-ai-tutorials)
+- [搭建第一个聊天接口](https://bitzw.modelgateai.com/blog/spring-ai-chat-getting-started)
+- [从聊天到知识检索的核心概念](https://bitzw.modelgateai.com/blog/spring-ai-core-concepts)
