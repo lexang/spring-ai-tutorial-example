@@ -1,0 +1,86 @@
+@baseUrl = http://localhost:8080
+
+### 默认提示词约束 + 模型输出业务校验
+GET {{baseUrl}}/structured/person?text=张三，25岁，软件工程师
+
+### JSON Schema 校验与自我纠错（默认最多追加 3 次重试）
+GET {{baseUrl}}/structured/person/validated?text=李四，30岁，产品经理
+
+### 供应商原生结构化输出 + 校验重试（需服务端支持）
+GET {{baseUrl}}/structured/person/native?text=王五，28岁，数据分析师
+
+### 自定义转换器：允许 JSON 外包裹 Markdown 说明
+GET {{baseUrl}}/structured/person/lenient?text=赵六，35岁，架构师
+
+### 同时获取实体和完整 ChatResponse
+GET {{baseUrl}}/structured/person/response?text=孙七，32岁，后端工程师
+
+### ChatModel + BeanOutputConverter 低层 API
+GET {{baseUrl}}/structured/films/low-level?actor=周星驰
+
+### 顶层对象包装作品列表 + 原生/响应校验（需兼容服务端支持）
+GET {{baseUrl}}/structured/films/native-wrapped
+
+### ParameterizedTypeReference 泛型列表
+GET {{baseUrl}}/structured/persons
+
+### 非 JSON 自定义格式（每行 name|age|job）
+GET {{baseUrl}}/structured/persons/pipe
+
+### 复杂嵌套对象
+GET {{baseUrl}}/structured/employee?text=李四，30岁，技术部，月薪15000元，住北京市海淀区，擅长Java和Spring
+
+### ListOutputConverter
+GET {{baseUrl}}/structured/keywords?text=Spring AI提供ChatClient、结构化输出和工具调用能力
+
+### MapOutputConverter
+GET {{baseUrl}}/structured/analyze?text=这个产品功能强大，价格也很合理
+
+### ChatModel + MapOutputConverter 低层 API
+GET {{baseUrl}}/structured/analyze/low-level?text=请返回关键词和字数
+
+### ChatModel + ListOutputConverter 低层 API
+GET {{baseUrl}}/structured/keywords/low-level?text=Spring%20AI提供结构化输出能力
+
+### 产品信息提取（请求体 @Valid）
+POST {{baseUrl}}/structured/product
+Content-Type: application/json
+
+{
+  "description": "iPhone 15 Pro，价格7999元，特点包括钛金属边框、A17芯片和48MP相机"
+}
+
+### 简历解析 + 输出业务校验
+POST {{baseUrl}}/structured/resume
+Content-Type: application/json
+
+{
+  "resumeText": "张三，邮箱zhangsan@example.com，电话13800138000。北京大学计算机本科，2020年毕业；2020至2023年在ABC公司任Java工程师；技能包括Java、Spring和MySQL。"
+}
+
+### ListOutputConverter 任务分解
+GET {{baseUrl}}/structured/tasks?task=开发一个用户管理系统
+
+### entity(Class) 简洁用法
+GET {{baseUrl}}/structured/entity?text=钱七，26岁，测试工程师
+
+### 输入校验：应返回 HTTP 400
+GET {{baseUrl}}/structured/person?text=
+
+### 请求体校验：应返回 HTTP 400
+POST {{baseUrl}}/structured/product
+Content-Type: application/json
+
+{}
+### 博客主线：描述转人员对象，默认 Schema 自我纠错
+POST http://localhost:8080/api/extraction/person
+Content-Type: application/json
+
+{"description":"张三，25岁，软件工程师","reliability":"SCHEMA"}
+
+### 仅提示与转换，仍做业务校验
+POST http://localhost:8080/api/extraction/person
+Content-Type: application/json
+
+{"description":"李四，30岁，产品经理","reliability":"PROMPT"}
+

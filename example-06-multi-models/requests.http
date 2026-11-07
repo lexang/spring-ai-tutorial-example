@@ -1,0 +1,55 @@
+@baseUrl = http://localhost:8080
+
+### 查看全部客户端
+GET {{baseUrl}}/api/models
+
+### OpenAI 快速客户端
+GET {{baseUrl}}/api/fast?question=什么是Java
+
+### OpenAI 标准客户端
+GET {{baseUrl}}/api/standard?question=如何学习Spring Boot
+
+### OpenAI 创意客户端
+GET {{baseUrl}}/api/creative?prompt=写一首关于春天的短诗
+
+### OpenAI 分析客户端
+GET {{baseUrl}}/api/analytical?question=分析微服务架构的优缺点
+
+### 动态选择 MiniMax 客户端
+POST {{baseUrl}}/api/chat
+Content-Type: application/json
+
+{
+  "message": "用三点解释 Spring AI 的价值",
+  "model": "minimax"
+}
+
+### 对比全部客户端
+GET {{baseUrl}}/api/compare?question=什么是人工智能
+
+### 规则智能路由
+GET {{baseUrl}}/api/smart?question=分析单体架构和微服务架构的差异
+
+### 输入校验（无需模型凭据）
+GET {{baseUrl}}/api/fast?question=
+
+### 不支持的模型（无需模型凭据）
+POST {{baseUrl}}/api/chat
+Content-Type: application/json
+
+{
+  "message": "测试",
+  "model": "unknown"
+}
+### 博客主线：路由预览，不调用供应商
+POST http://localhost:8080/api/routing/plan
+Content-Type: application/json
+
+{"task":"ANALYZE"}
+
+### 依据明确任务调用已配置的客户端
+POST http://localhost:8080/api/routing/chat
+Content-Type: application/json
+
+{"task":"SHORT_ANSWER","message":"用一句话解释构造器注入"}
+
