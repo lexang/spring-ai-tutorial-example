@@ -1,0 +1,49 @@
+@baseUrl = http://localhost:8080
+
+### 查询可用指标、维度和样例目录
+GET {{baseUrl}}/api/analytics/catalog
+
+### 按地区分析销售额
+POST {{baseUrl}}/api/analytics/query
+Content-Type: application/json
+
+{
+  "question": "比较各地区销售额",
+  "startDate": "2026-07-20",
+  "endDate": "2026-07-26",
+  "limit": 10
+}
+
+### 查看每日订单趋势
+POST {{baseUrl}}/api/analytics/query
+Content-Type: application/json
+
+{
+  "question": "查看每日订单趋势",
+  "startDate": "2026-07-20",
+  "endDate": "2026-07-26",
+  "limit": 20
+}
+
+### 写入一条新销售事件
+POST {{baseUrl}}/api/analytics/events
+Content-Type: application/json
+
+{
+  "saleDate": "2026-07-26",
+  "region": "华南",
+  "product": "Spring AI 课程",
+  "channel": "官网",
+  "units": 2,
+  "revenue": 598.00
+}
+
+### 再次查询即可看到刚写入的数据
+POST {{baseUrl}}/api/analytics/query
+Content-Type: application/json
+
+{
+  "question": "比较各地区销售额",
+  "startDate": "2026-07-20",
+  "endDate": "2026-07-26"
+}

@@ -1,0 +1,88 @@
+@baseUrl = http://localhost:8080
+
+### 生成测试用例
+POST {{baseUrl}}/api/test-gen/generate
+Content-Type: application/json
+
+{
+  "targetClass": "UserService",
+  "classSignature": "public class UserService { boolean login(String username, String password); }",
+  "instruction": "覆盖正常登录、空密码、错误密码三种场景",
+  "maxCases": 3
+}
+
+### 仅指定目标类和签名，使用默认 maxCases
+POST {{baseUrl}}/api/test-gen/generate
+Content-Type: application/json
+
+{
+  "targetClass": "OrderService",
+  "classSignature": "public class OrderService { Order create(String userId, List<Item> items); void cancel(Long orderId); }"
+}
+
+### 评估已生成的测试计划
+POST {{baseUrl}}/api/test-gen/evaluate
+Content-Type: application/json
+
+{
+  "targetClass": "UserService",
+  "summary": "为 UserService 生成 3 个测试用例",
+  "testCases": [
+    {
+      "name": "login_success",
+      "description": "验证正常登录",
+      "input": "username=admin&password=secret",
+      "expectedResult": "返回 true",
+      "mockData": [{"field": "id", "value": "1"}]
+    }
+  ]
+}
+
+### targetClass 为空返回中文 400
+POST {{baseUrl}}/api/test-gen/generate
+Content-Type: application/json
+
+{
+  "targetClass": "",
+  "classSignature": "public class A {}"
+}
+
+### maxCases 超出范围返回中文 400
+POST {{baseUrl}}/api/test-gen/generate
+Content-Type: application/json
+
+{
+  "targetClass": "A",
+  "classSignature": "public class A {}",
+  "maxCases": 99
+}
+
+### 评估空测试计划返回中文 502
+POST {{baseUrl}}/api/test-gen/evaluate
+Content-Type: application/json
+
+{
+  "targetClass": "Empty",
+  "summary": "无任何用例",
+  "testCases": []
+}
+
+### 按原始规格评估，而不是只检查计划摘要
+POST {{baseUrl}}/api/test-gen/evaluate-spec
+Content-Type: application/json
+
+{
+  "specification": {
+    "targetClass": "UserService",
+    "classSignature": "boolean login(String username, String password);",
+    "instruction": "覆盖空密码，预期拒绝登录",
+    "maxCases": 2
+  },
+  "plan": {
+    "targetClass": "UserService",
+    "summary": "检查空密码登录",
+    "testCases": [
+      {"name":"empty_password","description":"空密码被拒绝","input":"用户与空密码","expectedResult":"false","mockData":[]}
+    ]
+  }
+}

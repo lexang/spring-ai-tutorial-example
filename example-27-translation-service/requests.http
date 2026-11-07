@@ -1,0 +1,58 @@
+@baseUrl = http://localhost:8080
+
+### 中文翻译为英语
+POST {{baseUrl}}/api/translation
+Content-Type: application/json
+
+{
+  "text": "Spring AI 让构建企业级 AI 应用变得简单。",
+  "source": "ZH",
+  "target": "EN",
+  "glossary": [
+    {"source": "Spring AI", "target": "Spring AI"}
+  ]
+}
+
+### 英语翻译为日语，并使用术语表
+POST {{baseUrl}}/api/translation
+Content-Type: application/json
+
+{
+  "text": "The Spring AI framework supports structured output.",
+  "source": "EN",
+  "target": "JA",
+  "glossary": [
+    {"source": "Spring AI", "target": "Spring AI"},
+    {"source": "structured output", "target": "構造化出力"}
+  ]
+}
+
+### 不带术语表的翻译
+POST {{baseUrl}}/api/translation
+Content-Type: application/json
+
+{
+  "text": "Hello world",
+  "source": "EN",
+  "target": "ZH"
+}
+
+### 非法语言返回中文 400
+POST {{baseUrl}}/api/translation
+Content-Type: application/json
+
+{
+  "text": "Hello",
+  "source": "EN",
+  "target": "XX"
+}
+
+### 源语言与目标语言相同返回中文 400
+POST {{baseUrl}}/api/translation
+Content-Type: application/json
+
+{
+  "text": "Hello",
+  "source": "EN",
+  "target": "EN"
+}

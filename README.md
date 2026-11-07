@@ -39,6 +39,11 @@
 | [example-21-document-qa](./example-21-document-qa/README.md) | 文档替换/删除、同次来源与无上下文状态 | 12 个离线测试通过 |
 | [example-22-customer-support](./example-22-customer-support/README.md) | 订单授权、作用域历史与并发清理 | 15 个离线测试通过 |
 | [example-23-code-engineering](./example-23-code-engineering/README.md) | 结构化审查、语言框架与业务输出校验 | 11 个离线测试通过 |
+| [example-24-content-studio](./example-24-content-studio/README.md) | 文案、图片、WAV 与模式边界 | 7 个测试通过，含真实媒体解码 |
+| [example-25-realtime-analytics](./example-25-realtime-analytics/README.md) | 受控计划、SQL 与 H2 当前数据 | 13 个离线测试通过 |
+| [example-26-personal-knowledge](./example-26-personal-knowledge/README.md) | 事实回查、索引、版本与授权上下文 | 8 个离线测试通过 |
+| [example-27-translation-service](./example-27-translation-service/README.md) | 术语复核、数据编码与 live 装配 | 20 个离线/装配测试通过 |
+| [example-28-test-generator](./example-28-test-generator/README.md) | 计划校验、原始规格评估与 Judge 装配 | 21 个离线/装配测试通过 |
 
 后续按调用、模板、结构化输出、多模型、工具、检索、工程实践和综合业务项目补充，不按官方供应商或数据库子页面复制同款示例。
 

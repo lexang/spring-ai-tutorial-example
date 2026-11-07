@@ -1,0 +1,21 @@
+@baseUrl = http://localhost:8080
+
+### 生成文案、图片与语音内容包
+POST {{baseUrl}}/api/content/packages
+Content-Type: application/json
+
+{
+  "topic": "Spring AI 2.0 如何统一编排多种模型",
+  "audience": "Java 开发者",
+  "style": "professional"
+}
+
+### 非法风格返回中文 400
+POST {{baseUrl}}/api/content/packages
+Content-Type: application/json
+
+{
+  "topic": "测试",
+  "audience": "开发者",
+  "style": "imitate-living-artist"
+}

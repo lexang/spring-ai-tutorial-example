@@ -1,0 +1,25 @@
+@baseUrl = http://localhost:8080
+
+### 查看状态
+GET {{baseUrl}}/api/knowledge/status
+
+### 按用户与标签检索
+POST {{baseUrl}}/api/knowledge/search
+Content-Type: application/json
+
+{"ownerId":"alice","query":"工具调用由谁管理？","tag":"spring-ai","topK":3}
+
+### RAG 问答并返回来源
+POST {{baseUrl}}/api/knowledge/ask
+Content-Type: application/json
+
+{"ownerId":"alice","question":"工具调用由谁管理？","tag":"spring-ai","topK":3}
+
+### 创建笔记
+POST {{baseUrl}}/api/knowledge/notes
+Content-Type: application/json
+
+{"ownerId":"alice","title":"回归清单","content":"发布前运行完整测试。","tag":"work"}
+
+### 全量重建可派生向量索引
+POST {{baseUrl}}/api/knowledge/reindex
