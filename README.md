@@ -21,6 +21,7 @@
 | [example-04-prompt-templates](./example-04-prompt-templates/README.md) | UTF-8 系统模板、离线预览和真实模型调用 | 30 个离线测试 |
 | [example-05-structured-output](./example-05-structured-output/README.md) | 描述转人员对象、Schema/原生选项、业务验证 | 28 个离线测试 |
 | [example-06-multi-models](./example-06-multi-models/README.md) | 两供应商装配、任务路由预览与选定调用 | 10 个离线测试 |
+| [example-07-tool-calling](./example-07-tool-calling/README.md) | 只读工具、自动/手动循环、预算与异常边界 | 31 个离线测试 |
 
 后续按调用、模板、结构化输出、多模型、工具、检索、工程实践和综合业务项目补充，不按官方供应商或数据库子页面复制同款示例。
 

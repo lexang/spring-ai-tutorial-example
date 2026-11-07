@@ -1,0 +1,488 @@
+### Spring AI Tool Calling 测试用例
+### 用于测试 Tool Calling 功能的所有 API 端点
+
+@base_url = http://localhost:8080
+@content_type = application/json
+
+### 博客主线：只读库存，自动执行
+POST {{base_url}}/api/tools/query
+Content-Type: application/json
+
+{"question":"请查询 BOOK-001 的可用库存，并说明数据来源","mode":"AUTO"}
+
+### 同一工具，应用驱动手动循环
+POST {{base_url}}/api/tools/query
+Content-Type: application/json
+
+{"question":"请查询 BOOK-001 的可用库存","mode":"MANUAL"}
+
+### 仅查看工具请求，不执行工具；首轮模型仍可能计费
+POST {{base_url}}/api/tools/query
+Content-Type: application/json
+
+{"question":"请调用工具查询 BOOK-001 的库存","mode":"PLAN_ONLY"}
+
+### 直接返回工具序列化输出，不请求第二轮模型
+POST {{base_url}}/api/tools/query
+Content-Type: application/json
+
+{"question":"请调用工具查询 BOOK-001 的库存","mode":"DIRECT"}
+
+### 输入校验：期望 400，且不调用模型
+POST {{base_url}}/api/tools/query
+Content-Type: application/json
+
+{"question":" "}
+
+### 不知道编号时应先澄清；模型选择仍需实际观察
+POST {{base_url}}/api/tools/query
+Content-Type: application/json
+
+{"question":"我想查一本书的库存，但不知道商品编号","mode":"AUTO"}
+
+###############################################################################
+# Part 1: 基础 Tool Calling 示例 (/api)
+###############################################################################
+
+### 1. 日期时间工具示例
+# 测试 AI 是否能够调用日期时间工具获取当前时间
+GET {{base_url}}/api/datetime?question=现在几点了？
+Accept: text/plain
+
+### 1-2. 日期时间工具 - 复杂问题
+GET {{base_url}}/api/datetime?question=今天是星期几？距离圣诞节还有多少天？
+Accept: text/plain
+
+###
+
+### 2. 计算器工具示例
+# 测试 AI 是否能够调用计算器工具进行计算
+GET {{base_url}}/api/calculator?expression=123 * 456 + 789
+Accept: text/plain
+
+### 2-2. 计算器工具 - 复杂表达式
+GET {{base_url}}/api/calculator?expression=(100 + 50) * 2 - 80
+Accept: text/plain
+
+###
+
+### 3. 天气工具示例
+# 测试 AI 是否能够调用天气工具查询天气
+GET {{base_url}}/api/weather?question=北京今天天气怎么样？
+Accept: text/plain
+
+### 3-2. 天气工具 - 多城市查询
+GET {{base_url}}/api/weather?question=上海和深圳哪个城市更热？
+Accept: text/plain
+
+###
+
+### 4. 多工具协同示例
+# 测试 AI 是否能够同时调用多个工具
+GET {{base_url}}/api/multi-tool?question=现在几点了？北京天气怎么样？帮我算一下100+200等于多少？
+Accept: text/plain
+
+### 4-2. 多工具协同 - 复杂场景
+GET {{base_url}}/api/multi-tool?question=如果今天是星期一，北京气温是25度，那么7天后是星期几？如果每天温度下降2度，那时候会是多少度？
+Accept: text/plain
+
+###
+
+### 5. 数据库工具示例
+# 测试 AI 是否能够调用数据库工具查询用户信息
+GET {{base_url}}/api/database?question=查询用户ID为1的用户信息
+Accept: text/plain
+
+### 5-2. 数据库工具 - 批量查询
+GET {{base_url}}/api/database?question=查询所有用户的总数
+Accept: text/plain
+
+###
+
+### 6. 对比测试 - 不使用工具
+# 测试不使用工具时，AI 如何回答需要实时数据的问题
+GET {{base_url}}/api/without-tool?question=现在几点了？
+Accept: text/plain
+
+### 6-2. 对比测试 - 计算问题
+GET {{base_url}}/api/without-tool?question=帮我计算123乘以456
+Accept: text/plain
+
+###
+
+###############################################################################
+# Part 2: 高级 Tool Calling 示例 (/api/advanced)
+###############################################################################
+
+### 7. 文件系统工具示例
+# 测试 AI 是否能够调用文件系统工具
+GET {{base_url}}/api/advanced/filesystem?question=列出当前目录下的所有文件
+Accept: text/plain
+
+### 7-2. 文件系统工具 - 搜索文件
+GET {{base_url}}/api/advanced/filesystem?question=查找所有的Java文件
+Accept: text/plain
+
+###
+
+### 9. Function 接口工具示例
+# 测试使用 FunctionToolCallback 构建的工具
+GET {{base_url}}/api/advanced/function-tool?question=杭州今天的天气如何？
+Accept: text/plain
+
+### 9-2. Function 接口工具 - 华氏温度
+GET {{base_url}}/api/advanced/function-tool?question=纽约现在的温度是多少华氏度？
+Accept: text/plain
+
+###
+
+### 10. Lambda 表达式工具示例
+# 测试使用 Lambda 表达式创建的简单工具
+GET {{base_url}}/api/advanced/lambda-tool?question=现在是什么时间？
+Accept: text/plain
+
+###
+
+### 11. Bean 工具示例
+# 测试通过 @Bean 注册的工具
+GET {{base_url}}/api/advanced/bean-tool?question=北京今天天气怎么样？未来三天的天气预报呢？
+Accept: text/plain
+
+###
+
+### 12. ToolContext 示例 - 多租户场景
+# 测试传递上下文信息（租户ID、用户ID）
+GET {{base_url}}/api/advanced/tool-context?question=查询我的客户列表
+X-Tenant-ID: tenant-a
+X-User-ID: user-001
+Accept: text/plain
+
+### 12-2. ToolContext - 不同租户
+GET {{base_url}}/api/advanced/tool-context?question=获取客户总数
+X-Tenant-ID: tenant-b
+X-User-ID: user-002
+Accept: text/plain
+
+###
+
+### 13. Return Direct 示例
+# 测试直接返回工具结果，不经过模型处理
+GET {{base_url}}/api/advanced/return-direct?query=Spring AI
+Accept: text/plain
+
+### 13-2. Return Direct - 不同关键词
+GET {{base_url}}/api/advanced/return-direct?query=Tool Calling
+Accept: text/plain
+
+###
+
+
+### 15. 自定义 ResultConverter 示例
+# 测试使用自定义转换器格式化工具返回结果
+GET {{base_url}}/api/advanced/custom-converter?question=查找id是1的客户,格式化返回
+Accept: text/plain
+
+### 15-2. 自定义 ResultConverter - 特定客户
+GET {{base_url}}/api/advanced/custom-converter?question=查找id是1的客户
+Accept: text/plain
+
+###
+
+### 16. 异常处理示例
+# 测试工具执行中的异常处理
+GET {{base_url}}/api/advanced/exception-handling?expression=10 / 0
+Accept: text/plain
+
+### 16-2. 异常处理 - 正常计算
+GET {{base_url}}/api/advanced/exception-handling?expression=100 / 5
+Accept: text/plain
+
+### 16-3. 异常处理 - 无效表达式
+GET {{base_url}}/api/advanced/exception-handling?expression=abc + xyz
+Accept: text/plain
+
+###
+
+### 17. 综合示例 - 多种高级特性组合
+# 测试同时使用多个高级特性
+GET {{base_url}}/api/advanced/comprehensive?question=现在几点了？帮我查询一下租户的客户信息，并计算客户总数乘以2是多少。
+X-Tenant-ID: tenant-a
+Accept: text/plain
+
+### 17-2. 综合示例 - 复杂业务场景
+GET {{base_url}}/api/advanced/comprehensive?question=搜索Spring AI相关内容，然后告诉我当前时间，最后帮我算一下100加200等于多少。
+X-Tenant-ID: tenant-b
+Accept: text/plain
+
+###
+
+###############################################################################
+# 性能和压力测试
+###############################################################################
+
+### 18. 多次连续调用测试 - 天气工具
+GET {{base_url}}/api/weather?question=北京、上海、广州、深圳、杭州这五个城市今天的天气分别怎么样？
+Accept: text/plain
+
+###
+
+### 19. 复杂计算链测试
+GET {{base_url}}/api/calculator?expression=((100 + 200) * 3 - 50) / 10 + 25
+Accept: text/plain
+
+###
+
+### 20. 长文本问题测试
+GET {{base_url}}/api/multi-tool?question=你好，我想了解一下现在的时间，然后帮我计算一下如果我每天工作8小时，一周工作5天，一个月按4周计算，那么一个月我总共工作多少小时？另外，如果北京今天的温度是25度，明天上升3度，后天再下降2度，大后天的温度会是多少？
+Accept: text/plain
+
+###
+
+###############################################################################
+# 边界条件测试
+###############################################################################
+
+### 21. 空问题测试
+GET {{base_url}}/api/datetime?question=
+Accept: text/plain
+
+###
+
+### 22. 特殊字符测试
+GET {{base_url}}/api/weather?question=北京的天气怎么样？温度是多少？会下雨吗？
+Accept: text/plain
+
+###
+
+### 23. 中英文混合测试
+GET {{base_url}}/api/calculator?expression=calculate: 100 + 200
+Accept: text/plain
+
+###
+
+### 24. 工具选择测试 - AI 应该选择合适的工具
+GET {{base_url}}/api/multi-tool?question=帮我做三件事：1) 告诉我现在几点 2) 北京天气 3) 计算99+1
+Accept: text/plain
+
+###
+
+###############################################################################
+# 功能验证测试
+###############################################################################
+
+### 25. 验证工具是否被正确调用 - 时间工具
+# 期望: AI 应该调用时间工具，而不是猜测时间
+GET {{base_url}}/api/datetime?question=精确告诉我现在的时间，包括秒数
+Accept: text/plain
+
+###
+
+### 26. 验证工具是否被正确调用 - 计算工具
+# 期望: AI 应该调用计算工具，而不是自己计算
+GET {{base_url}}/api/calculator?expression=123456789 * 987654321
+Accept: text/plain
+
+###
+
+### 27. 验证多工具协同工作
+# 期望: AI 应该调用三个不同的工具
+GET {{base_url}}/api/multi-tool?question=告诉我：1.现在的日期和时间 2.北京的天气 3.计算2的10次方
+Accept: text/plain
+
+###
+
+### 28. 验证 ToolContext 是否正确传递
+# 期望: 不同的租户ID应该返回不同的结果
+GET {{base_url}}/api/advanced/tool-context?question=我的租户ID是什么？
+X-Tenant-ID: test-tenant-123
+X-User-ID: test-user-456
+Accept: text/plain
+
+###
+
+### 29. 验证 Return Direct 特性
+# 期望: 返回原始搜索结果，不经过模型润色
+GET {{base_url}}/api/advanced/return-direct?query=测试直接返回
+Accept: text/plain
+
+###
+
+### 30. 验证异常是否被正确处理
+# 期望: 返回友好的错误信息，而不是系统崩溃
+GET {{base_url}}/api/advanced/exception-handling?expression=1 / 0
+Accept: text/plain
+
+###
+
+###############################################################################
+# Part 3: 新增高级功能测试
+###############################################################################
+
+### 31. MethodToolCallback 示例 - 时间工具
+# 测试使用 MethodToolCallback 程序化创建的工具
+GET {{base_url}}/api/method-tool/time?question=现在几点了？
+Accept: text/plain
+
+### 31-2. MethodToolCallback - 时区时间
+GET {{base_url}}/api/method-tool/time?question=纽约现在是几点？
+Accept: text/plain
+
+###
+
+### 32. MethodToolCallback - 动态创建工具
+# 测试根据配置动态创建工具
+GET {{base_url}}/api/method-tool/dynamic?question=告诉我现在的时间
+Accept: text/plain
+
+###
+
+### 32-2. MethodToolCallback - 创建方式对比
+GET {{base_url}}/api/method-tool/compare?question=上海和纽约现在分别几点？
+Accept: text/plain
+
+###
+
+### 33. MethodToolCallback - 静态方法工具
+# 测试使用静态方法作为工具
+GET {{base_url}}/api/method-tool/static-method?question=2024-01-01到2024-12-31之间有多少天？
+Accept: text/plain
+
+###
+
+### 34. Default Tools 示例 - 使用默认工具
+# 测试默认工具自动可用
+GET {{base_url}}/api/default-tools/with-defaults?question=现在几点了？
+Accept: text/plain
+
+### 34-2. Default Tools - 不使用默认工具（对比）
+# 测试不配置默认工具时的行为
+GET {{base_url}}/api/default-tools/without-defaults?question=现在几点了？
+Accept: text/plain
+
+###
+
+### 35. Default Tools - 运行时工具追加
+# 测试运行时工具会追加到默认工具
+GET {{base_url}}/api/default-tools/runtime-append?question=北京天气怎么样？现在几点了？
+Accept: text/plain
+
+###
+
+### 36. Default Tools - 同时使用默认和运行时工具
+# 测试显式添加两种工具
+GET {{base_url}}/api/default-tools/combined?question=北京天气怎么样？现在几点了？
+Accept: text/plain
+
+###
+
+### 37. Default Tools - 使用显式注入的 ToolCallback Bean
+# 测试显式注入并传入 ToolCallback
+GET {{base_url}}/api/default-tools/bean-tools?question=北京今天天气如何？未来三天呢？
+Accept: text/plain
+
+###
+
+### 38. Default Tools - 追加多个运行时工具
+# 测试多个运行时工具与默认工具共同可用
+GET {{base_url}}/api/default-tools/merged?question=查询北京天气和当前时间
+Accept: text/plain
+
+###
+
+### 39. JSON Schema 注解示例 (@Schema)
+# 测试使用 @Schema 注解的复杂参数定义
+GET {{base_url}}/api/advanced/schema-annotation?question=帮我预订一个酒店房间，2024年1月15日入住，1月20日退房，我的邮箱是 user@example.com，需要豪华房间，2个人入住
+Accept: text/plain
+
+### 39-2. JSON Schema - 参数验证
+# 测试 @Schema 注解的验证功能
+GET {{base_url}}/api/advanced/schema-annotation?question=预订标准房间，明天入住，后天退房，邮箱 test@test.com，4人入住，特殊要求是禁烟房和高楼层
+Accept: text/plain
+
+### 39-3. JSON Schema - 查询预订
+GET {{base_url}}/api/advanced/schema-annotation?question=查询确认号为 BK-12345678 的预订信息
+Accept: text/plain
+
+###
+
+### 40. User-Controlled Tool Execution 示例 - 自动 vs 手动对比
+# 测试自动执行和手动执行工具的区别
+GET {{base_url}}/api/user-controlled/compare?question=计算 25 乘以 4
+Accept: text/plain
+
+###
+
+### 41. User-Controlled - 基础手动执行
+# 测试最基本的手动工具执行流程
+GET {{base_url}}/api/user-controlled/basic?question=100 加 200 等于多少
+Accept: text/plain
+
+###
+
+### 42. User-Controlled - 多工具手动执行
+# 测试使用多个工具的手动执行，带执行追踪
+GET {{base_url}}/api/user-controlled/multi-tool?question=现在几点了？帮我算一下 50 乘以 3
+Accept: text/plain
+
+###
+
+### 43. User-Controlled - 工作流追踪
+# 测试完整的工作流追踪功能
+GET {{base_url}}/api/user-controlled/workflow?task=计算 (100 + 50) * 2 - 80
+Accept: text/plain
+
+###
+
+### 44. User-Controlled - 条件执行（允许）
+# 测试条件执行：允许工具执行
+GET {{base_url}}/api/user-controlled/conditional?question=计算 99 加 1&allowToolExecution=true
+Accept: text/plain
+
+###
+
+### 45. User-Controlled - 条件执行（禁止）
+# 测试条件执行：禁止工具执行
+GET {{base_url}}/api/user-controlled/conditional?question=计算 99 加 1&allowToolExecution=false
+Accept: text/plain
+
+###
+
+### 46. chatMemory
+# 测试条件执行：禁止工具执行
+GET {{base_url}}/api/user-controlled/chatMemory
+Accept: text/plain
+
+###
+
+###############################################################################
+# 结束标记
+###############################################################################
+
+### 测试完成
+### 所有测试用例执行完毕
+###
+### 测试统计:
+### - 历史 GET 请求示例: 63 个；另有 6 个博客主线 POST 示例
+### - 离线 Maven 测试: 31 个（不访问外部模型）
+###
+### 注意：输入校验失败不会调用模型，其余交互请求可能产生模型费用。
+###
+### 使用说明:
+### 1. 确保应用已启动: mvn spring-boot:run
+### 2. 确保已配置 MINIMAX_API_KEY 环境变量
+### 3. 使用 IntelliJ IDEA 或 VS Code 的 REST Client 插件执行测试
+### 4. 点击测试用例上方的 "Run" 或 "Send Request" 执行
+### 5. 观察返回结果，验证工具是否被正确调用
+###
+### 注意事项:
+### - 某些测试需要实际的 API 调用，会产生费用
+### - 当前示例使用 MiniMax-M3，调用前请确认账户计费信息
+### - 部分测试结果可能因模型响应而略有不同
+### - 异常处理测试应该返回友好的错误信息
+###
+### 新增功能说明:
+### - MethodToolCallback: 程序化创建工具，无需注解
+### - Default Tools: 配置默认工具，自动对所有请求可用
+### - JSON Schema (@Schema): 使用 Swagger 注解提供详细参数信息
+### - User-Controlled Tool Execution: 手动控制工具执行流程
+###
