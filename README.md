@@ -33,6 +33,9 @@
 | [example-15-mcp-server](./example-15-mcp-server/README.md) | 注册计算工具、Schema 与可选能力 | 13 个测试通过，含本机 SDK 协议验证 |
 | [example-16-observability](./example-16-observability/README.md) | 观察指标、Prometheus 与默认隐私 convention | 6 个测试通过，本机指标检查通过 |
 | [example-17-testing-evaluation](./example-17-testing-evaluation/README.md) | 评估契约与显式 Judge 模式 | 15 个通过，1 个可选容器测试跳过 |
+| [example-18-prompt-engineering](./example-18-prompt-engineering/README.md) | 模板预览、背景生成、严格多数与采样边界 | 11 个离线测试通过 |
+| [example-19-performance-cost](./example-19-performance-cost/README.md) | 用量、缓存口径、预算与批处理 | 16 个离线测试通过 |
+| [example-20-effective-agents](./example-20-effective-agents/README.md) | 五种工作流与路由、评审、并发边界 | 13 个离线测试通过 |
 
 后续按调用、模板、结构化输出、多模型、工具、检索、工程实践和综合业务项目补充，不按官方供应商或数据库子页面复制同款示例。
 
@@ -57,7 +60,7 @@ mvn spring-boot:run
 
 核心概念项目还使用 `OPENAI_EMBEDDING_MODEL` 选择 Embedding 模型。具体端点、准备步骤和结果边界见各项目 README 与 `requests.http`。
 
-默认端口均为 8080，运行另一个项目之前停止占用该端口的服务。模型名是示例配置，切换时要同时核对该模型的参数支持，不能只修改名字。
+各项目端口见其 README 与配置，运行另一个项目之前检查端口占用。模型名是示例配置，切换时要同时核对该模型的参数支持，不能只修改名字。
 
 ## 验证范围
 

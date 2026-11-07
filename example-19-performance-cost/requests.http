@@ -1,0 +1,48 @@
+### 估算 token 和成本（默认离线）
+POST http://localhost:8090/api/performance/estimate
+Content-Type: application/json
+
+{
+  "text": "请把 Spring AI 的 Usage、缓存 token 和预算策略整理成三点。",
+  "maxOutputTokens": 80
+}
+
+### 预算允许时执行模型调用；响应包含 metadata 摘要和已报告 Usage
+POST http://localhost:8090/api/performance/chat
+Content-Type: application/json
+
+{
+  "prompt": "用一句话说明为什么要记录 prompt token 和 completion token。",
+  "maxOutputTokens": 40,
+  "maxBudget": 0.001
+}
+
+### 预算过低时返回中文 400
+POST http://localhost:8090/api/performance/chat
+Content-Type: application/json
+
+{
+  "prompt": "这次请求应该被预算策略拦截。",
+  "maxOutputTokens": 400,
+  "maxBudget": 0.00000001
+}
+
+### 累计多步 usage；检查 usageComplete 及累计 nativeUsage 的存在状态
+GET http://localhost:8090/api/performance/usage
+
+### embedding 文档批处理
+POST http://localhost:8090/api/performance/batch
+Content-Type: application/json
+
+{
+  "documents": [
+    "Spring AI 统一 ChatModel 和 EmbeddingModel。",
+    "TokenCountBatchingStrategy 按估算 token 数拆分批次。",
+    "批处理可以避免单次 embedding 超过上下文窗口。"
+  ],
+  "maxInputTokens": 30,
+  "reservePercentage": 0.1
+}
+
+### Spring AI 模型 token 指标（调用几次 /chat 后再访问）
+GET http://localhost:8090/actuator/metrics/gen_ai.client.token.usage

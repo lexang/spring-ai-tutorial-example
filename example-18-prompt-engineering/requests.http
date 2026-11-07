@@ -1,0 +1,36 @@
+### 默认离线：预览零样本提示词
+GET http://localhost:8089/api/prompts/zero-shot?review=这部电影很精彩
+
+### 预览少样本提示词
+GET http://localhost:8089/api/prompts/few-shot?order=中号披萨，番茄酱和橄榄
+
+### 预览上下文提示词
+GET http://localhost:8089/api/prompts/contextual?context=面向Java初学者&question=解释依赖注入
+
+### 预览树状思考的三个候选分支
+GET http://localhost:8089/api/prompts/tree-of-thoughts?problem=选择缓存淘汰策略
+
+### live profile：零样本模型调用（需要 MINIMAX_API_KEY）
+POST http://localhost:8089/api/live/zero-shot
+Content-Type: application/json
+
+{
+  "review": "这部电影很精彩"
+}
+
+### live profile：两阶段 Step-back 调用
+POST http://localhost:8089/api/live/step-back
+Content-Type: application/json
+
+{
+  "question": "如何降低消息队列的重复消费？"
+}
+
+### live profile：自洽性投票（最多 7 次模型调用）
+POST http://localhost:8089/api/live/self-consistency
+Content-Type: application/json
+
+{
+  "problem": "17 * 19 等于多少？",
+  "samples": 3
+}

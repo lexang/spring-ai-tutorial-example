@@ -1,0 +1,57 @@
+### Chain Workflow
+POST http://localhost:8091/api/agents/chain
+Content-Type: application/json
+
+{
+  "input": "为客户支持功能整理需求",
+  "steps": [
+    "提取验收条件",
+    "生成面向用户的摘要"
+  ]
+}
+
+### Parallelization Workflow
+POST http://localhost:8091/api/agents/parallel
+Content-Type: application/json
+
+{
+  "input": "分析市场变化的影响",
+  "perspectives": [
+    "客户视角",
+    "员工视角",
+    "投资者视角"
+  ]
+}
+
+### Routing Workflow
+POST http://localhost:8091/api/agents/route
+Content-Type: application/json
+
+{
+  "input": "我的账户上周被重复扣费"
+}
+
+### Orchestrator-Workers（结构化计划 + 并行工作者）
+POST http://localhost:8091/api/agents/orchestrate
+Content-Type: application/json
+
+{
+  "input": "为一个 REST API 编写技术和用户说明"
+}
+
+### Evaluator-Optimizer
+POST http://localhost:8091/api/agents/evaluate-optimize
+Content-Type: application/json
+
+{
+  "input": "实现一个线程安全的 Java 计数器",
+  "maxIterations": 3
+}
+
+### 参数错误
+POST http://localhost:8091/api/agents/route
+Content-Type: application/json
+
+{
+  "input": ""
+}
