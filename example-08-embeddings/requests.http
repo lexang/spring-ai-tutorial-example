@@ -1,0 +1,57 @@
+### Spring AI 2.0 Embeddings 示例
+
+@base_url = http://localhost:8080
+@content_type = application/json
+
+### 博客主线：批量向量及两条文本的余弦比较
+POST {{base_url}}/api/embedding/analyze
+Content-Type: application/json
+
+{"texts":["Java 程序设计","Java 企业应用开发"]}
+
+### 缺失文本：应返回 400，不访问模型
+POST {{base_url}}/api/embedding/analyze
+Content-Type: application/json
+
+{"texts":["有效文本"," "]}
+
+### 单文本嵌入
+GET {{base_url}}/api/embed?text=Spring AI 向量化
+
+### 批量嵌入
+POST {{base_url}}/api/embed/batch
+Content-Type: {{content_type}}
+
+["Spring AI", "向量数据库", "语义搜索"]
+
+### 相似度
+GET {{base_url}}/api/similarity?text1=猫是宠物&text2=狗是宠物
+
+### 语义搜索
+GET {{base_url}}/api/search?query=Java 企业应用&topK=3
+
+### 添加文档
+POST {{base_url}}/api/documents
+Content-Type: {{content_type}}
+
+{"content": "Rust 是注重内存安全的系统编程语言。"}
+
+### 批量添加文档
+POST {{base_url}}/api/documents/batch
+Content-Type: {{content_type}}
+
+["PostgreSQL 是关系型数据库。", "Redis 是内存数据存储。"]
+
+### 查找相似文档
+POST {{base_url}}/api/documents/similar
+Content-Type: {{content_type}}
+
+{"content": "Java 适合企业服务开发。", "topK": 3}
+
+### 统计信息
+GET {{base_url}}/api/documents/stats
+
+### 清空文档
+DELETE {{base_url}}/api/documents
+
+###

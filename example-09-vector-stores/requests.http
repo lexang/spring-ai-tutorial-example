@@ -1,0 +1,54 @@
+### Spring AI 2.0 VectorStore 示例
+@base_url = http://localhost:8080
+@document_id = 替换为新增文档返回的 documentId
+
+### 博客主线：POST 结构化搜索（无需聊天模型）
+POST {{base_url}}/api/documents/search
+Content-Type: application/json
+
+{"query":"Java 程序设计","topK":4,"threshold":0.0,"category":"编程语言","year":2025}
+
+### 非法 topK：应返回 400
+POST {{base_url}}/api/documents/search
+Content-Type: application/json
+
+{"query":"Java","topK":0}
+
+### 添加文档
+POST {{base_url}}/api/documents
+Content-Type: application/json
+
+{"content":"Spring AI 2.0 使用统一的 VectorStore API。","metadata":{"category":"Spring AI","year":2026}}
+
+### 批量添加
+POST {{base_url}}/api/documents/batch
+Content-Type: application/json
+
+[
+  {"content":"PostgreSQL 可以安装 pgvector 扩展。","metadata":{"category":"向量数据库","year":2026}},
+  {"content":"HNSW 是近似最近邻索引。","metadata":{"category":"向量数据库","year":2026}}
+]
+
+### 简单搜索
+GET {{base_url}}/api/documents/search?query=什么是向量数据库&topK=5
+
+### 文本表达式过滤
+GET {{base_url}}/api/documents/search/filter?query=如何构建 AI 应用&filter=category == 'Spring AI'&topK=5&threshold=0.0
+
+### 结构化 DSL 过滤
+GET {{base_url}}/api/documents/search/dsl?query=数据库&category=向量数据库&year=2026&topK=5
+
+### 按 ID 删除
+DELETE {{base_url}}/api/documents/{{document_id}}
+
+### 按过滤表达式删除
+DELETE {{base_url}}/api/documents/filter?expression=category == '临时数据'
+
+### 基础问答，需要 MINIMAX_API_KEY
+GET {{base_url}}/api/qa/ask?question=Spring AI 有什么特点
+
+### 分类问答，需要 MINIMAX_API_KEY
+GET {{base_url}}/api/qa/ask/category?question=它解决什么问题&category=向量数据库
+
+### 存储信息
+GET {{base_url}}/api/documents/stats
