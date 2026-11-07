@@ -1,0 +1,161 @@
+### 基础同步调用
+GET http://localhost:8080/chatclient/basic?message=请介绍 Spring AI
+
+### 带系统消息
+GET http://localhost:8080/chatclient/with-system?role=Java专家&message=什么是 ChatClient
+
+### 完整响应、finish reason 和 Usage
+GET http://localhost:8080/chatclient/full-response?message=介绍 Spring AI
+
+### 流式文本数据块
+GET http://localhost:8080/chatclient/stream?message=讲一个简短的故事
+Accept: text/event-stream
+
+### 流式 ChatClientResponse 和 Advisor context
+GET http://localhost:8080/chatclient/stream-response?message=讲一个简短的故事
+Accept: text/event-stream
+
+### 普通模型：maxTokens
+GET http://localhost:8080/chatclient/with-options?message=写一首四行短诗&temperature=1.2&maxTokens=200
+
+### 某些推理模型：maxCompletionTokens（是否支持以当前模型文档为准）
+GET http://localhost:8080/chatclient/with-options?message=解释一个复杂问题&maxTokens=300&useMaxCompletionTokens=true
+
+### 参数校验：temperature 超范围，应返回 HTTP 400
+GET http://localhost:8080/chatclient/with-options?message=测试&temperature=3&maxTokens=100
+
+### 从现有 ChatClient mutate 派生短回答客户端
+GET http://localhost:8080/chatclient/mutated?message=介绍 ChatClient
+
+### 普通结构化输出
+GET http://localhost:8080/chatclient/entity
+
+### 供应商原生结构化输出 + Schema 校验
+GET http://localhost:8080/chatclient/entity-validated
+
+### 结构化实体和完整 ChatResponse
+GET http://localhost:8080/chatclient/response-entity
+
+### 请求 Message Metadata 与供应商响应 Metadata 分开展示
+GET http://localhost:8080/chatclient/with-metadata?message=你好
+
+### ChatClientResponse 执行上下文
+GET http://localhost:8080/advanced/client-response?message=你好
+
+### 带错误处理的调用
+GET http://localhost:8080/advanced/with-error-handling?message=测试消息
+
+### 脱敏自定义日志（需要临时开启 Advisor DEBUG）
+GET http://localhost:8080/advanced/with-custom-logger?message=介绍 Spring AI
+
+### 新建或继续多轮对话
+POST http://localhost:8080/conversation/conv-001
+Content-Type: application/json
+
+{
+  "message": "我想学习 Java"
+}
+
+### 继续同一会话
+POST http://localhost:8080/conversation/conv-001
+Content-Type: application/json
+
+{
+  "message": "从哪里开始？"
+}
+
+### 查看对话历史快照
+GET http://localhost:8080/conversation/conv-001/history
+
+### 重置对话
+DELETE http://localhost:8080/conversation/conv-001
+
+### Message Metadata：基础使用
+GET http://localhost:8080/api/metadata/basic?message=介绍一下 Spring AI
+
+### Message Metadata：批量添加
+GET http://localhost:8080/api/metadata/batch?message=什么是 ChatClient
+X-User-Id: user-123
+
+### Message Metadata：多租户 Advisor
+POST http://localhost:8080/api/metadata/multi-tenant?message=解释 Advisor 的作用
+X-User-Id: user-456
+X-Tenant-Id: tenant-premium
+
+### Message Metadata：优先级 Advisor
+POST http://localhost:8080/api/metadata/priority?message=解释 Message Metadata&priority=high
+X-User-Id: user-789
+
+### Message Metadata：完整 Advisor context 传播
+POST http://localhost:8080/api/metadata/complete?message=总结 Spring AI&priority=high
+X-User-Id: complete-user
+X-Tenant-Id: tenant-premium
+
+### Message Metadata：本地校验（不调用模型）
+GET http://localhost:8080/api/metadata/validation
+
+### 默认 Resource 系统模板与请求参数
+GET http://localhost:8080/examples/template?topic=Spring AI&voice=详细
+
+### 自定义分隔符
+GET http://localhost:8080/examples/custom-template?topic=JSON
+
+### NoOp 保留字面 JSON
+POST http://localhost:8080/examples/literal
+Content-Type: text/plain
+
+请解释 {"topic":"Spring AI"}。
+
+### 泛型列表
+GET http://localhost:8080/examples/films?actor=汤姆汉克斯
+
+### 聚合流式结果后转换
+GET http://localhost:8080/examples/films/stream?actor=汤姆汉克斯
+
+### 请求体参与分析
+POST http://localhost:8080/examples/analyze
+Content-Type: text/plain
+
+服务很周到，下次还会再来。
+
+### 框架 Memory Advisor
+GET http://localhost:8080/examples/memory?conversationId=demo-a&message=我叫小明
+
+### 自动工具循环
+GET http://localhost:8080/examples/tools?question=今天的 UTC 日期是什么
+
+### 问答
+GET http://localhost:8080/examples/qa?question=什么是 Spring AI
+
+### 代码解释
+POST http://localhost:8080/examples/explain-code
+Content-Type: text/plain
+
+int result = 1 + 2;
+
+### 摘要与输出上限
+POST http://localhost:8080/examples/summarize?maxTokens=100
+Content-Type: text/plain
+
+Spring AI 提供统一模型 API，也保留供应商特有选项。
+
+### SSE 数据块
+GET http://localhost:8080/examples/typewriter?message=讲一个简短故事
+Accept: text/event-stream
+
+### 同步调用统计，不调用模型
+GET http://localhost:8080/advanced/metrics
+
+### 博客主示例：POST 请求，读取完整响应
+POST http://localhost:8080/api/chat
+Content-Type: application/json
+
+{"message":"解释构造器注入为什么方便测试","style":"TECHNICAL","maxTokens":300,"temperature":0.2}
+
+### 相同请求结构，SSE 返回正文与元数据块
+POST http://localhost:8080/api/chat/stream
+Content-Type: application/json
+Accept: text/event-stream
+
+{"message":"分三点说明依赖注入","style":"CONCISE","maxTokens":300}
+

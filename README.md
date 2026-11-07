@@ -17,6 +17,8 @@
 |---|---|---|
 | [example-01-getting-started](./example-01-getting-started/README.md) | 用 ChatClient 完成同步聊天与 SSE，处理输入和模型错误 | 10 个离线测试 |
 | [example-02-core-concepts](./example-02-core-concepts/README.md) | 通过 Prompt、Token 和 Embedding 实验理解输入与检索 | 14 个离线测试 |
+| [example-03-chatclient-basics](./example-03-chatclient-basics/README.md) | 选择默认客户端、POST 请求配置、完整响应和 SSE 元数据 | 37 个离线/本机测试 |
+| [example-04-prompt-templates](./example-04-prompt-templates/README.md) | UTF-8 系统模板、离线预览和真实模型调用 | 30 个离线测试 |
 
 后续按调用、模板、结构化输出、多模型、工具、检索、工程实践和综合业务项目补充，不按官方供应商或数据库子页面复制同款示例。
 
@@ -61,3 +63,5 @@ mvn spring-boot:run
 - [Spring AI 实战系列](https://bitzw.modelgateai.com/blog/spring-ai-tutorials)
 - [搭建第一个聊天接口](https://bitzw.modelgateai.com/blog/spring-ai-chat-getting-started)
 - [从聊天到知识检索的核心概念](https://bitzw.modelgateai.com/blog/spring-ai-core-concepts)
+- [ChatClient 请求配置、响应与 SSE](https://bitzw.modelgateai.com/blog/spring-ai-chatclient-requests)
+- [Prompt 模板：先预览，再调用模型](https://bitzw.modelgateai.com/blog/spring-ai-prompt-templates)

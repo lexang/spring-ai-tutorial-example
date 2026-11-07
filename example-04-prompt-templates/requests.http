@@ -1,0 +1,114 @@
+### 基础 PromptTemplate（需要有效模型配置）
+GET http://localhost:8080/template/basic?topic=太空探险&style=科幻
+
+### 翻译
+POST http://localhost:8080/template/translate
+Content-Type: application/json
+
+{
+  "text": "Hello World",
+  "source": "英语",
+  "target": "中文"
+}
+
+### 代码审查
+POST http://localhost:8080/template/code-review
+Content-Type: application/json
+
+{
+  "code": "public int add(int a, int b) { return a + b; }",
+  "language": "Java"
+}
+
+### ChatClient Fluent 模板
+GET http://localhost:8080/template/fluent?name=张三&skill=Java
+
+### 多消息 Prompt
+GET http://localhost:8080/template/multi-message?role=Java专家&question=什么是 Spring Boot
+
+### SystemPromptTemplate
+GET http://localhost:8080/template/system-template?role=架构师&domain=微服务&question=如何设计服务网格
+
+### 自定义模板分隔符
+GET http://localhost:8080/template/custom-delimiter?name=张三&age=25
+
+### 专家系统模板（固定资源、显式 UTF-8）
+GET http://localhost:8080/template/expert?expertise=Spring%20AI&question=什么是Prompt
+
+### render 与 create 对比
+GET http://localhost:8080/template/render?topic=人工智能
+
+### Token 使用量
+GET http://localhost:8080/template/token-usage?question=什么是机器学习
+
+### 批量翻译
+POST http://localhost:8080/template/batch-translate
+Content-Type: application/json
+
+{
+  "texts": ["Hello", "Good morning", "Thank you"],
+  "source": "英语",
+  "target": "中文"
+}
+
+### 生成文章
+POST http://localhost:8080/template/generate-article
+Content-Type: application/json
+
+{
+  "topic": "Spring AI 入门",
+  "length": 800,
+  "style": "技术博客",
+  "keywords": ["Spring", "AI", "ChatClient"]
+}
+
+### 生成大纲
+GET http://localhost:8080/template/generate-outline?topic=微服务架构设计
+
+### 智能客服
+POST http://localhost:8080/template/customer-service
+Content-Type: application/json
+
+{
+  "customerName": "张三",
+  "customerLevel": "VIP",
+  "type": "订单查询",
+  "message": "我想查询最近的订单状态",
+  "orders": [
+    {"id": "20240101", "amount": 299.0, "status": "已发货"}
+  ]
+}
+
+### 参数校验示例：应返回 HTTP 400 中文错误
+GET http://localhost:8080/template/basic?topic=&style=科幻
+
+### 缺少参数：应返回 HTTP 400 中文错误
+GET http://localhost:8080/template/basic?topic=Spring%20AI
+
+### 畸形 JSON：应返回 HTTP 400 中文错误
+POST http://localhost:8080/template/translate
+Content-Type: application/json
+
+{
+
+### 参数校验示例：批量列表不能为空
+POST http://localhost:8080/template/batch-translate
+Content-Type: application/json
+
+{
+  "texts": [],
+  "source": "英语",
+  "target": "中文"
+}
+### 博客主线：预览最终消息，不调用模型
+POST http://localhost:8080/template/preview
+Content-Type: application/json
+
+{"question":"分析 List<String> 和 JSON：{\"a\":1}","expertise":"Java"}
+
+### 使用与预览相同的输入调用专家助手
+POST http://localhost:8080/template/expert
+Content-Type: application/json
+
+{"question":"解释构造器注入为什么方便测试","expertise":"Spring Boot"}
+
