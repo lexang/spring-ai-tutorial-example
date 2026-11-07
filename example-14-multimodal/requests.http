@@ -1,0 +1,96 @@
+@baseUrl = http://localhost:8080
+@imagePath = C:/temp/multimodal.png
+@audioPath = C:/temp/speech.mp3
+
+### 1. 查看四类模型状态（默认均为 false）
+GET {{baseUrl}}/api/multimodal/status
+Accept: application/json
+
+### 2. 图片理解（把 imagePath 改为本机图片路径，需要启用 ChatModel）
+POST {{baseUrl}}/api/multimodal/describe?question=请用三点描述这张图片
+Content-Type: multipart/form-data; boundary=MultimodalBoundary
+Accept: application/json
+
+--MultimodalBoundary
+Content-Disposition: form-data; name="file"; filename="multimodal.png"
+Content-Type: image/png
+
+< {{imagePath}}
+--MultimodalBoundary--
+
+### 3. 图片生成（需要启用 ImageModel）
+POST {{baseUrl}}/api/images/generate
+Content-Type: application/json
+Accept: application/json
+
+{
+  "prompt": "一只戴圆框眼镜的橘猫在阅读 Spring AI 文档，扁平插画风格",
+  "n": 1,
+  "width": 1024,
+  "height": 1024
+}
+
+### 4. 语音转写（把 audioPath 改为本机音频路径，需要启用 TranscriptionModel）
+POST {{baseUrl}}/api/audio/transcriptions?language=zh
+Content-Type: multipart/form-data; boundary=AudioBoundary
+Accept: application/json
+
+--AudioBoundary
+Content-Disposition: form-data; name="file"; filename="speech.mp3"
+Content-Type: audio/mpeg
+
+< {{audioPath}}
+--AudioBoundary--
+
+### 5. 文字转语音（需要启用 TextToSpeechModel；响应直接保存为二进制音频）
+POST {{baseUrl}}/api/audio/speech
+Content-Type: application/json
+Accept: audio/wav
+
+{
+  "text": "你好，这是 Spring AI 二点零的文字转语音示例。",
+  "voice": "alloy",
+  "format": "wav",
+  "speed": 1.0
+}
+
+>> C:/temp/generated-speech.wav
+
+### 6. 流式文字转语音（返回 application/octet-stream）
+POST {{baseUrl}}/api/audio/speech/stream
+Content-Type: application/json
+Accept: application/octet-stream
+
+{"text":"这是流式语音输出示例。该音频由 AI 生成。"}
+
+>> C:/temp/generated-stream.bin
+
+### 7. 参数校验：空 prompt 返回中文 400
+POST {{baseUrl}}/api/images/generate
+Content-Type: application/json
+
+{
+  "prompt": "   "
+}
+
+### 8. 默认未启用模型时返回中文 503
+POST {{baseUrl}}/api/images/generate
+Content-Type: application/json
+
+{
+  "prompt": "离线状态检查"
+}
+
+### 9. 非法 TTS format 返回中文 400（在检查模型开关前完成参数校验）
+POST {{baseUrl}}/api/audio/speech
+Content-Type: application/json
+
+{
+  "text": "格式校验",
+  "format": "ogg"
+}
+
+### 10. 502 语义
+# 启用模型后，如果供应商调用失败，或者模型返回空文本、空图片、空音频、空流，
+# MultimodalExceptionHandler 会返回中文 HTTP 502。默认离线配置无法主动制造供应商失败，
+# 对应契约由 MultimodalServiceTest 和 MultimodalExceptionHandlerTest 的确定性假模型验证。
