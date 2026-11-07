@@ -1,0 +1,18 @@
+### 基础对话
+GET http://localhost:8080/chat?message=请用一句话介绍 Spring AI
+
+### 流式对话
+GET http://localhost:8080/chat/stream?message=请讲一个简短的故事
+Accept: text/event-stream
+
+### 带错误处理的对话
+GET http://localhost:8080/chat/safe?message=什么是 ChatClient
+
+### 请求级温度参数
+GET http://localhost:8080/chat/creative?message=请写一首四行短诗&temperature=1.2
+
+### 空白输入：预期中文 HTTP 400
+GET http://localhost:8080/chat?message=%20
+
+### 非有限温度：预期中文 HTTP 400
+GET http://localhost:8080/chat/creative?message=你好&temperature=NaN

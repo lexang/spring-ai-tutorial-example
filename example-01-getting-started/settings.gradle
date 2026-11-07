@@ -1,0 +1,6 @@
+rootProject.name = 'spring-ai-getting-started'
+def dsl = providers.gradleProperty('buildDsl').getOrElse('groovy')
+if (!(dsl in ['groovy', 'kotlin'])) {
+    throw new GradleException('buildDsl 只允许 groovy 或 kotlin')
+}
+rootProject.buildFileName = dsl == 'kotlin' ? 'build.gradle.kts' : 'build.gradle'

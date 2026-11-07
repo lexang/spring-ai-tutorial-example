@@ -1,0 +1,41 @@
+### Prompt：仅用户消息
+GET http://localhost:8080/prompt/user-only?message=请用一句话介绍 Spring AI
+
+### PromptTemplate：使用真实模板 API 渲染变量
+GET http://localhost:8080/prompt/template?question=如何优化数据库查询
+
+### 空参数应返回中文 400
+GET http://localhost:8080/prompt/template?question=%20
+
+### Prompt：系统消息和用户消息
+GET http://localhost:8080/prompt/with-system?role=Java专家&message=什么是 Spring AI
+
+### Prompt：多轮对话
+GET http://localhost:8080/prompt/conversation?question=那么如何开始学习
+
+### Prompt Engineering：Few-shot
+GET http://localhost:8080/prompt/few-shot?input=王五,28岁,产品经理
+
+### Token：查看使用量和成本
+GET http://localhost:8080/token/usage?message=介绍 Spring AI
+
+### 本地 Token 估算（不调用模型）
+GET http://localhost:8080/token/estimate?text=Spring%20AI与普通字符串有什么区别
+
+### Token：限制输出长度
+GET http://localhost:8080/token/limit?message=介绍 Spring AI&maxTokens=50
+
+### Token：推理模型限制输出（按实际模型规格使用）
+GET http://localhost:8080/token/limit?message=解释 Spring AI&maxTokens=50&reasoningModel=true
+
+### Token：成本估算
+GET http://localhost:8080/token/cost-calculator?calls=10000&avgPrompt=100&avgCompletion=500
+
+### Embeddings：生成向量
+GET http://localhost:8080/embeddings/generate?text=Spring AI 是什么
+
+### Embeddings：计算相似度
+GET http://localhost:8080/embeddings/similarity?text1=Java编程&text2=学习Java
+
+### Embeddings：查找相似文本
+GET http://localhost:8080/embeddings/find-similar?query=Java性能优化

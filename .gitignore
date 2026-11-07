@@ -1,0 +1,21 @@
+# 构建和依赖缓存
+**/target/
+**/build/
+**/.gradle/
+
+# IDE 与本地设置
+.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db
+
+# 凭据和个人环境
+.env
+.env.*
+*.pem
+**/application-local.properties
+**/application-local.yml
+
+# 日志
+*.log
