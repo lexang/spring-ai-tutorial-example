@@ -1,0 +1,12 @@
+spring:
+  ai:
+    mcp:
+      client:
+        enabled: true
+        type: SYNC
+        initialized: true
+        streamable-http:
+          connections:
+            local-server:
+              url: ${MCP_SERVER_URL:http://localhost:8080}
+              endpoint: ${MCP_SERVER_ENDPOINT:/mcp}

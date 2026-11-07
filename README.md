@@ -29,6 +29,8 @@
 | [example-12-chat-memory](./example-12-chat-memory/README.md) | 会话窗口、JDBC 存储与模型请求边界 | 19 个通过，1 个真实模型条件测试跳过 |
 | [example-13-advisors-deep-dive](./example-13-advisors-deep-dive/README.md) | 执行链、离线预览、阻断与有限递归 | 33 个通过，1 个真实模型条件测试跳过 |
 | [example-14-multimodal](./example-14-multimodal/README.md) | 媒体输入、文件转写、二进制输出与流取消 | 21 个离线/本机测试通过 |
+| [example-15-mcp-client](./example-15-mcp-client/README.md) | MCP 连接、发现、直接工具调用与边界 | 7 个测试通过，真实本机闭环通过 |
+| [example-15-mcp-server](./example-15-mcp-server/README.md) | 注册计算工具、Schema 与可选能力 | 13 个测试通过，含本机 SDK 协议验证 |
 
 后续按调用、模板、结构化输出、多模型、工具、检索、工程实践和综合业务项目补充，不按官方供应商或数据库子页面复制同款示例。
 

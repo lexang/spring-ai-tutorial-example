@@ -1,0 +1,15 @@
+### 默认离线模式：查看状态
+GET http://localhost:8088/api/mcp/status
+
+### 使用 remote profile 且 MCP_SERVER_URL 指向 MCP Server 后查看工具
+GET http://localhost:8088/api/mcp/tools
+
+### 调用已发现的 MCP 工具（示例工具名以服务端实际返回为准）
+POST http://localhost:8088/api/mcp/tools/basic-calculation
+Content-Type: application/json
+
+{
+  "a": 12,
+  "b": 3,
+  "operation": "+"
+}

@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: mcp-client-demo
+  ai:
+    mcp:
+      client:
+        # 默认关闭远程连接，保证首次启动不会启动 npx 或访问外部地址。
+        enabled: false
+        name: mcp-client-demo
+        version: 2.0.0
+        type: SYNC
+        initialized: true
+        request-timeout: 20s
+        toolcallback:
+          enabled: true
+        annotation-scanner:
+          enabled: true
+
+server:
+  port: 8088
+  address: ${SERVER_ADDRESS:127.0.0.1}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+logging:
+  level:
+    com.example.mcp.demo: INFO
+    org.springframework.ai.mcp: INFO

@@ -1,0 +1,10 @@
+spring:
+  ai:
+    mcp:
+      client:
+        enabled: true
+        type: SYNC
+        initialized: true
+        # 选择 Claude Desktop 格式的 JSON；Windows 和 Unix 示例分别提供。
+        stdio:
+          servers-configuration: ${MCP_STDIO_CONFIG:classpath:mcp-servers-windows.json}

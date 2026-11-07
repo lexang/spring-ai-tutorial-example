@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: mcp-server-examples
+  main:
+    banner-mode: off
+  ai:
+    mcp:
+      server:
+        enabled: true
+        name: mcp-example-server
+        version: 2.0.0
+        type: SYNC
+        protocol: STREAMABLE
+        instructions: "默认提供只读计算、资源、提示和自动完成；文件工具必须显式启用"
+        annotation-scanner:
+          enabled: true
+        streamable-http:
+          mcp-endpoint: /mcp
+          keep-alive-interval: 30s
+          disallow-delete: false
+
+app:
+  data-directory: ${MCP_DATA_DIRECTORY:${java.io.tmpdir}/spring-ai-mcp-data}
+  file-tools-enabled: ${MCP_ENABLE_FILE_TOOLS:false}
+
+server:
+  port: 8080
+  address: ${SERVER_ADDRESS:127.0.0.1}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+logging:
+  level:
+    com.minimax.examples: INFO
+    org.springframework.ai.mcp: INFO

@@ -1,0 +1,7 @@
+@baseUrl = http://127.0.0.1:8080
+
+### 普通健康接口，不能代替 MCP 初始化
+GET {{baseUrl}}/actuator/health
+
+### MCP /mcp 需要协议客户端，不在此发送未经初始化的业务 JSON
+### 使用配套客户端 requests.http 或运行 McpServerIntegrationTest

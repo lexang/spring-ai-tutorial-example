@@ -1,0 +1,25 @@
+@baseUrl = http://127.0.0.1:8088
+
+### 默认离线状态
+GET {{baseUrl}}/api/mcp/status
+
+### remote profile 连接后查询允许的计算工具
+GET {{baseUrl}}/api/mcp/tools
+
+### 调用基础计算
+POST {{baseUrl}}/api/mcp/tools/basic-calculation
+Content-Type: application/json
+
+{"a":12,"b":3,"operation":"+"}
+
+### 工具业务错误：检查 isError，不只看 HTTP 200
+POST {{baseUrl}}/api/mcp/tools/basic-calculation
+Content-Type: application/json
+
+{"a":12,"b":0,"operation":"/"}
+
+### 应返回 403，不调用 MCP 文件工具
+POST {{baseUrl}}/api/mcp/tools/delete-file
+Content-Type: application/json
+
+{"fileName":"example.txt"}
