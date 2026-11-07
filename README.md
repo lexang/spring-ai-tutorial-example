@@ -36,6 +36,9 @@
 | [example-18-prompt-engineering](./example-18-prompt-engineering/README.md) | 模板预览、背景生成、严格多数与采样边界 | 11 个离线测试通过 |
 | [example-19-performance-cost](./example-19-performance-cost/README.md) | 用量、缓存口径、预算与批处理 | 16 个离线测试通过 |
 | [example-20-effective-agents](./example-20-effective-agents/README.md) | 五种工作流与路由、评审、并发边界 | 13 个离线测试通过 |
+| [example-21-document-qa](./example-21-document-qa/README.md) | 文档替换/删除、同次来源与无上下文状态 | 12 个离线测试通过 |
+| [example-22-customer-support](./example-22-customer-support/README.md) | 订单授权、作用域历史与并发清理 | 15 个离线测试通过 |
+| [example-23-code-engineering](./example-23-code-engineering/README.md) | 结构化审查、语言框架与业务输出校验 | 11 个离线测试通过 |
 
 后续按调用、模板、结构化输出、多模型、工具、检索、工程实践和综合业务项目补充，不按官方供应商或数据库子页面复制同款示例。
 

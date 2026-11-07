@@ -1,0 +1,58 @@
+@baseUrl = http://localhost:8080
+
+### 1. 查看状态
+GET {{baseUrl}}/api/support/status
+Accept: application/json
+
+### 2. 咨询退款政策，走 RAG
+POST {{baseUrl}}/api/support/chat
+Content-Type: application/json
+
+{
+  "customerId": "customer-a",
+  "conversationId": "case-001",
+  "message": "已经发货的订单如何退款？"
+}
+
+### 3. 查询自己的订单，自动执行工具
+POST {{baseUrl}}/api/support/chat
+Content-Type: application/json
+
+{
+  "customerId": "customer-a",
+  "conversationId": "case-001",
+  "message": "请查询订单 ORD-1001 的物流状态"
+}
+
+### 4. 验证会话记忆
+POST {{baseUrl}}/api/support/chat
+Content-Type: application/json
+
+{
+  "customerId": "customer-a",
+  "conversationId": "case-001",
+  "message": "我上一个问题是什么？"
+}
+
+### 5. customer-b 无权查询 customer-a 的订单
+POST {{baseUrl}}/api/support/chat
+Content-Type: application/json
+
+{
+  "customerId": "customer-b",
+  "conversationId": "case-001",
+  "message": "请查询订单 ORD-1001 的状态"
+}
+
+### 6. 清空当前客户的会话
+DELETE {{baseUrl}}/api/support/conversations?customerId=customer-a&conversationId=case-001
+
+### 7. 非法会话 ID 返回中文 400
+POST {{baseUrl}}/api/support/chat
+Content-Type: application/json
+
+{
+  "customerId": "customer-a",
+  "conversationId": "case/../../other",
+  "message": "测试"
+}

@@ -1,0 +1,37 @@
+@baseUrl = http://localhost:8080
+
+### 1. 代码审查
+POST {{baseUrl}}/api/code/review
+Content-Type: application/json
+
+{
+  "language": "java",
+  "code": "public String greet(String name) { return \"Hello \" + name; }"
+}
+
+### 2. 生成测试计划
+POST {{baseUrl}}/api/code/tests
+Content-Type: application/json
+
+{
+  "language": "java",
+  "code": "public int divide(int a, int b) { return a / b; }"
+}
+
+### 3. 生成实现
+POST {{baseUrl}}/api/code/implement
+Content-Type: application/json
+
+{
+  "language": "java",
+  "code": "实现一个方法，接收字符串并去除首尾空白；null 返回空字符串。"
+}
+
+### 4. 凭据输入被拒绝
+POST {{baseUrl}}/api/code/review
+Content-Type: application/json
+
+{
+  "language": "java",
+  "code": "String password = \"secret\";"
+}

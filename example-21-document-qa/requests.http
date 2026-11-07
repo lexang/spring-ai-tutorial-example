@@ -1,0 +1,69 @@
+@baseUrl = http://localhost:8080
+
+### 1. 查看知识库状态
+GET {{baseUrl}}/api/knowledge/status
+Accept: application/json
+
+### 2. 写入 Spring AI 文档
+POST {{baseUrl}}/api/knowledge/documents
+Content-Type: application/json
+
+{
+  "title": "Spring AI RAG 简介",
+  "source": "guide://spring-ai-rag",
+  "category": "spring-ai",
+  "content": "Spring AI 的 RAG 流程先从向量存储检索相关文档，再由 QuestionAnswerAdvisor 把文档上下文加入用户提示词。VectorStore 负责保存嵌入并执行相似度检索，ETL Pipeline 负责读取、拆分和写入文档。"
+}
+
+### 3. 写入另一分类文档
+POST {{baseUrl}}/api/knowledge/documents
+Content-Type: application/json
+
+{
+  "title": "Spring Boot 简介",
+  "source": "guide://spring-boot",
+  "category": "spring-boot",
+  "content": "Spring Boot 通过自动配置、Starter 和约定优于配置来减少 Spring 应用的样板代码，并提供 Actuator 等生产支持能力。"
+}
+
+### 4. RAG 问答并返回检索来源
+POST {{baseUrl}}/api/knowledge/ask
+Content-Type: application/json
+
+{
+  "question": "Spring AI 的 RAG 如何使用向量存储？",
+  "topK": 3
+}
+
+### 5. 按安全分类过滤
+POST {{baseUrl}}/api/knowledge/ask
+Content-Type: application/json
+
+{
+  "question": "Spring 框架有哪些能力？",
+  "topK": 3,
+  "category": "spring-ai"
+}
+
+### 6. 更新相同 source（旧的多余 chunk 会删除）
+POST {{baseUrl}}/api/knowledge/documents
+Content-Type: application/json
+
+{
+  "title": "Spring AI RAG 更新说明",
+  "source": "guide://spring-ai-rag",
+  "category": "spring-ai",
+  "content": "Spring AI 2.0 使用 spring-ai-vector-store-advisor 提供 QuestionAnswerAdvisor。请求级过滤表达式通过 Advisor context 传递，回答同时应保留检索来源用于审计。"
+}
+
+### 7. 删除指定来源
+DELETE {{baseUrl}}/api/knowledge/documents?source=guide://spring-boot
+
+### 8. 非法 topK 返回中文 400
+POST {{baseUrl}}/api/knowledge/ask
+Content-Type: application/json
+
+{
+  "question": "测试",
+  "topK": 99
+}
