@@ -1,0 +1,154 @@
+### Spring AI 2.0 Chat Memory 示例请求
+### IntelliJ IDEA 可直接逐条运行
+
+@baseUrl = http://localhost:8080
+@inMemoryConversation = demo-memory
+@jdbcConversation = demo-jdbc
+@chatConversation = demo-chat
+@vectorConversation = vector-demo
+
+### ============================================================
+### 1. 可选模型状态（默认离线时 enabled=false）
+### ============================================================
+
+GET {{baseUrl}}/api/chat/status
+
+###
+
+GET {{baseUrl}}/api/vector-memory/status
+
+### ============================================================
+### 2. InMemory：完全离线可用
+### ============================================================
+
+POST {{baseUrl}}/api/memory/in-memory/{{inMemoryConversation}}/messages
+Content-Type: application/json
+
+{
+  "role": "system",
+  "text": "你是一个中文技术助手"
+}
+
+###
+
+POST {{baseUrl}}/api/memory/in-memory/{{inMemoryConversation}}/messages
+Content-Type: application/json
+
+{
+  "role": "user",
+  "text": "我叫张三"
+}
+
+###
+
+POST {{baseUrl}}/api/memory/in-memory/{{inMemoryConversation}}/messages
+Content-Type: application/json
+
+{
+  "role": "assistant",
+  "text": "你好，张三"
+}
+
+### 查看当前窗口；InMemory 的 createdAt 为 null
+GET {{baseUrl}}/api/memory/in-memory/{{inMemoryConversation}}
+
+### 清除当前 InMemory 会话
+DELETE {{baseUrl}}/api/memory/in-memory/{{inMemoryConversation}}
+
+### ============================================================
+### 3. JDBC/H2：完全离线可用，默认跨重启保留
+### ============================================================
+
+POST {{baseUrl}}/api/memory/jdbc/{{jdbcConversation}}/messages
+Content-Type: application/json
+
+{
+  "role": "user",
+  "text": "这条消息写入文件型 H2"
+}
+
+###
+
+POST {{baseUrl}}/api/memory/jdbc/{{jdbcConversation}}/messages
+Content-Type: application/json
+
+{
+  "role": "assistant",
+  "text": "查询结果会包含 createdAt 时间戳"
+}
+
+### 查看 JDBC 窗口和时间戳
+GET {{baseUrl}}/api/memory/jdbc/{{jdbcConversation}}
+
+### 清除数据库中的当前会话
+DELETE {{baseUrl}}/api/memory/jdbc/{{jdbcConversation}}
+
+### ============================================================
+### 4. MessageChatMemoryAdvisor
+### 需要 SPRING_AI_CHAT_MODEL=anthropic 和 MINIMAX_API_KEY
+### 默认离线配置会返回中文 503，而不是导致应用启动失败
+### ============================================================
+
+POST {{baseUrl}}/api/chat/jdbc/{{chatConversation}}
+Content-Type: application/json
+
+{
+  "message": "我叫李四，是 Java 开发者，请记住"
+}
+
+###
+
+POST {{baseUrl}}/api/chat/jdbc/{{chatConversation}}
+Content-Type: application/json
+
+{
+  "message": "我叫什么名字，从事什么工作？"
+}
+
+### 查看 Advisor 保存到 JDBC 的最终用户/助手消息
+GET {{baseUrl}}/api/memory/jdbc/{{chatConversation}}
+
+### ============================================================
+### 5. VectorStoreChatMemoryAdvisor
+### 同时需要 ChatModel 和 SPRING_AI_EMBEDDING_MODEL=transformers
+### ============================================================
+
+POST {{baseUrl}}/api/vector-memory/{{vectorConversation}}
+Content-Type: application/json
+
+{
+  "message": "我最喜欢 Java、Spring Boot 和 Spring AI",
+  "topK": 5
+}
+
+###
+
+POST {{baseUrl}}/api/vector-memory/{{vectorConversation}}
+Content-Type: application/json
+
+{
+  "message": "我喜欢哪些技术？",
+  "topK": 3
+}
+
+### 使用结构化 conversationId 过滤条件清除向量记忆
+DELETE {{baseUrl}}/api/vector-memory/{{vectorConversation}}
+
+### ============================================================
+### 6. 输入边界与中文错误响应
+### ============================================================
+
+### 非法 storage：返回 400
+GET {{baseUrl}}/api/memory/unknown/{{inMemoryConversation}}
+
+### conversationId 超过 H2 Schema 的 36 位限制：返回 400
+GET {{baseUrl}}/api/memory/jdbc/this-conversation-id-is-definitely-too-long-for-h2
+
+### 空消息：返回 400
+POST {{baseUrl}}/api/memory/in-memory/{{inMemoryConversation}}/messages
+Content-Type: application/json
+
+{
+  "role": "user",
+  "text": ""
+}

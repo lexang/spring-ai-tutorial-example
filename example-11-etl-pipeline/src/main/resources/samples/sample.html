@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Spring AI 教程团队">
+    <meta name="date" content="2024-11-13">
+    <meta name="description" content="Spring AI ETL Pipeline HTML 示例文档">
+    <title>Spring AI ETL Pipeline 示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        article {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        h1 {
+            color: #333;
+        }
+        h2 {
+            color: #666;
+        }
+        .content {
+            margin: 20px 0;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        blockquote {
+            border-left: 4px solid #ddd;
+            margin: 10px 0;
+            padding-left: 15px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <article>
+        <h1>Spring AI ETL Pipeline 教程</h1>
+
+        <div class="content">
+            <h2>什么是 ETL Pipeline？</h2>
+            <p>
+                ETL (Extract, Transform, Load) 是数据处理的三个核心步骤，在 Spring AI 中用于将各种格式的文档转换为可供 AI 模型使用的向量数据。
+            </p>
+
+            <h2>核心组件</h2>
+            <p>Spring AI 的 ETL Pipeline 包含三个主要接口：</p>
+            <ul>
+                <li><strong>DocumentReader</strong>: 从各种数据源读取文档（Extract）</li>
+                <li><strong>DocumentTransformer</strong>: 处理和优化文档（Transform）</li>
+                <li><strong>DocumentWriter</strong>: 存储到目标系统（Load）</li>
+            </ul>
+        </div>
+
+        <div class="content">
+            <h2>DocumentReader 类型</h2>
+            <p>Spring AI 提供了多种 DocumentReader 实现：</p>
+            <ul>
+                <li><code>TextReader</code> - 读取纯文本文件</li>
+                <li><code>JsonReader</code> - 读取 JSON 格式数据</li>
+                <li><code>MarkdownDocumentReader</code> - 读取 Markdown 文档</li>
+                <li><code>PagePdfDocumentReader</code> - 按页读取 PDF 文档</li>
+                <li><code>JsoupDocumentReader</code> - 读取 HTML 文档</li>
+                <li><code>TikaDocumentReader</code> - 读取多种 Office 格式</li>
+            </ul>
+        </div>
+
+        <div class="content">
+            <h2>使用场景</h2>
+            <blockquote>
+                ETL Pipeline 是 RAG (检索增强生成) 应用的数据准备阶段，确保文档能够被有效地向量化和检索。
+            </blockquote>
+            <p>典型的应用场景包括：</p>
+            <ul>
+                <li>知识库文档导入</li>
+                <li>智能文档问答系统</li>
+                <li>企业内容搜索引擎</li>
+                <li>文档分类和标签系统</li>
+            </ul>
+        </div>
+
+        <div class="content">
+            <h2>最佳实践</h2>
+            <p>在使用 ETL Pipeline 时，建议：</p>
+            <ol>
+                <li>合理选择文档分割大小（通常 300-800 tokens）</li>
+                <li>为文档添加丰富的元数据，提高检索精度</li>
+                <li>使用批处理提高处理效率</li>
+                <li>实现错误处理和重试机制</li>
+            </ol>
+        </div>
+
+        <div class="content">
+            <h2>性能优化</h2>
+            <p>
+                对于大规模文档处理，可以考虑并行处理、缓存机制和流式处理等优化策略。
+                合理配置 <code>TokenTextSplitter</code> 的参数对性能影响显著。
+            </p>
+        </div>
+    </article>
+
+    <footer>
+        <p>© 2024 Spring AI 教程团队</p>
+        <a href="https://docs.spring.io/spring-ai/reference/">Spring AI 官方文档</a>
+    </footer>
+</body>
+</html>

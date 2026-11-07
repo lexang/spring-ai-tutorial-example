@@ -1,0 +1,23 @@
+Spring AI 是一个强大的人工智能应用框架。
+
+它提供了以下核心功能：
+1. ChatClient API - 统一的聊天接口
+2. Prompt 模板 - 灵活的提示词管理
+3. 结构化输出 - 将 AI 输出转换为 Java 对象
+4. ETL Pipeline - 数据提取、转换和加载
+
+Spring AI 支持多种 AI 模型提供商：
+- OpenAI
+- Azure OpenAI
+- Anthropic
+- Google GenAI
+- 本地模型（Ollama、ONNX Embedding）
+
+主要应用场景：
+- 智能对话系统
+- 文档问答 (RAG)
+- 内容生成
+- 数据分析
+- 代码辅助
+
+Spring AI 的设计理念是提供一致的 API 抽象，让开发者可以轻松切换不同的 AI 模型，而无需修改业务代码。

@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "title": "Spring AI 快速入门",
+    "category": "教程",
+    "content": "本教程介绍如何快速开始使用 Spring AI 框架。首先需要添加依赖，然后配置 API Key，最后编写第一个 AI 应用。",
+    "tags": ["入门", "教程", "Spring AI"],
+    "author": "张三",
+    "date": "2024-01-15"
+  },
+  {
+    "id": 2,
+    "title": "ChatClient API 详解",
+    "category": "教程",
+    "content": "ChatClient 是 Spring AI 的核心接口，提供了统一的聊天 API。支持同步调用、流式响应和结构化输出。",
+    "tags": ["ChatClient", "API", "高级"],
+    "author": "李四",
+    "date": "2024-01-20"
+  },
+  {
+    "id": 3,
+    "title": "RAG 实战指南",
+    "category": "实战",
+    "content": "检索增强生成 (RAG) 是结合向量检索和大语言模型的强大技术。本文介绍如何使用 Spring AI 实现 RAG。",
+    "tags": ["RAG", "向量数据库", "实战"],
+    "author": "王五",
+    "date": "2024-02-01"
+  }
+]

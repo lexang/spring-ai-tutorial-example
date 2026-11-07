@@ -1,0 +1,82 @@
+@baseUrl = http://localhost:8080
+
+### 博客主线：先预览，不启用模型和写入
+POST {{baseUrl}}/api/etl/pipeline/preview?format=json
+
+### 再显式执行入库；需要启用 EmbeddingModel
+POST {{baseUrl}}/api/etl/pipeline/process?format=text&enableEnrich=false
+
+### TextReader：无需 ChatModel 和向量模型调用
+GET {{baseUrl}}/api/etl/reader/text
+
+### JsonReader：选择正文字段
+GET {{baseUrl}}/api/etl/reader/json?keys=title,content
+
+### JsonReader：自定义 JsonMetadataGenerator
+GET {{baseUrl}}/api/etl/reader/json/metadata
+
+### JsonReader：RFC 6901 JSON Pointer
+GET {{baseUrl}}/api/etl/reader/json/pointer?pointer=/1
+
+### MarkdownDocumentReader
+GET {{baseUrl}}/api/etl/reader/markdown?splitByHorizontalRule=true&includeCodeBlock=true
+
+### JsoupDocumentReader：合并匹配元素
+GET {{baseUrl}}/api/etl/reader/html?selector=article%20.content&groupByElement=false
+
+### JsoupDocumentReader：每个匹配元素生成一个 Document
+GET {{baseUrl}}/api/etl/reader/html?selector=article%20.content&groupByElement=true
+
+### PagePdfDocumentReader
+GET {{baseUrl}}/api/etl/reader/pdf/page?pagesPerDocument=1&pageTopMargin=0
+
+### ParagraphPdfDocumentReader：样例 PDF 无目录时可能返回 422
+GET {{baseUrl}}/api/etl/reader/pdf/paragraph
+
+### TikaDocumentReader
+GET {{baseUrl}}/api/etl/reader/tika
+
+### TokenTextSplitter：minChunkSizeChars 不是 overlap
+GET {{baseUrl}}/api/etl/transformer/split?chunkSize=200&minChunkSizeChars=80&encoding=CL100K_BASE&chinesePunctuation=true
+
+### 对比分块参数
+GET {{baseUrl}}/api/etl/transformer/split/compare
+
+### ContentFormatTransformer：查看 ALL/INFERENCE/EMBED 三种格式
+GET {{baseUrl}}/api/etl/transformer/format
+
+### KeywordMetadataEnricher：需设置 SPRING_AI_CHAT_MODEL=anthropic 和 MINIMAX_API_KEY
+GET {{baseUrl}}/api/etl/transformer/enrich/keywords?keywordCount=5&documentLimit=3
+
+### SummaryMetadataEnricher：需启用 ChatModel
+GET {{baseUrl}}/api/etl/transformer/enrich/summary?documentLimit=3
+
+### 链式 Transformer：需启用 ChatModel
+GET {{baseUrl}}/api/etl/transformer/chain
+
+### FileDocumentWriter：只写入预配置目录中的固定文件
+POST {{baseUrl}}/api/etl/writer/file?markers=true&metadataMode=ALL&append=false
+
+### 完整 ETL：需要可用的 ONNX 嵌入模型
+POST {{baseUrl}}/api/etl/pipeline/process?format=text&enableEnrich=false&enrichLimit=3
+
+### JSON ETL
+POST {{baseUrl}}/api/etl/pipeline/process?format=json&enableEnrich=false&enrichLimit=3
+
+### 带关键词增强的 ETL：同时需要 ChatModel 和 ONNX EmbeddingModel
+POST {{baseUrl}}/api/etl/pipeline/process?format=markdown&enableEnrich=true&enrichLimit=3
+
+### 三种格式批量写入向量存储
+POST {{baseUrl}}/api/etl/pipeline/multi-format
+
+### 官方函数式组合
+POST {{baseUrl}}/api/etl/pipeline/functional
+
+### 相似度查询
+GET {{baseUrl}}/api/etl/pipeline/search?query=Spring%20AI%20ETL&topK=3
+
+### 当前进程跟踪统计
+GET {{baseUrl}}/api/etl/pipeline/stats
+
+### 删除当前进程通过 ETL 端点写入的文档
+DELETE {{baseUrl}}/api/etl/pipeline/clear
